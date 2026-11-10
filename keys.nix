@@ -1,0 +1,5 @@
+[
+  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPoBp3cGMohQO+JdZyEiK4Ag/14BlmccQEkQeuQs8haA viggokh@goonbox-3000"
+  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC7R0xrx7mrLnksZTO3Zc8I2i5aTEunWxFcfVeDTL71x viggokh@goonbox-3500"
+  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID8jMemi3PwkC9V8AZYf3hYGdozFcAuQ/OaTfVFA+HUv u0_a421@localhost"
+]

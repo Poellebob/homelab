@@ -1,0 +1,31 @@
+{ config, ... }:
+{
+  imports = [ ./docker.nix ];
+
+  age.secrets.windrose-env.file = ../secrets + "/${config.networking.hostName}/windrose-env.age";
+
+  systemd.tmpfiles.rules = [
+    "d /srv/windrose/gooncave 0755 1001 100 -"
+    "Z /srv/windrose/gooncave - 1001 100 -"
+  ];
+
+  virtualisation.oci-containers = {
+    containers.windrose = {
+      image = "indifferentbroccoli/windrose-server-docker";
+      autoStart = true;
+      volumes = [
+        "/srv/windrose/gooncave/server-files:/home/steam/server-files"
+      ];
+      environment = {
+        PUID = "1001";
+        PGID = "100"; # users group
+        UPDATE_ON_START = "true";
+        SERVER_NAME = "SlaveUndertheTY Windrose";
+        MAX_PLAYERS = "10";
+      };
+      environmentFiles = [
+        config.age.secrets.windrose-env.path
+      ];
+    };
+  };
+}
