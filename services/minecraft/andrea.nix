@@ -11,10 +11,10 @@ let
     description = "Local listening port; declare explicitly in flake.nix.";
   };
   cfg = config.homelab.services.andrea;
-  serverSidedModHash = "a081467fdd8fc497b74faa39efcec39edf167c71";
+  ServerSidedModHash = "3d4453fd39e2992eed7e957947cc80f35f7507da";
   serversided = pkgs.fetchPackwizModpack {
-    url = "https://raw.githubusercontent.com/SESG-HTX-LAN/server-modpack/${serverSidedModHash}/pack.toml";
-    packHash = "sha256-yjMV6GZ2ZNP2j/v6am4bGpP0jQobGvjhyoRYpNvtuX4=";
+    url = "https://raw.githubusercontent.com/SESG-HTX-LAN/server-modpack/${ServerSidedModHash}/pack.toml";
+    packHash = "sha256-w9G7IvO8dq8OGmUSOB+eOKFTdJL8/RPcFgTnZJW1fr4=";
   };
 in
 {

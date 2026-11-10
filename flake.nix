@@ -34,6 +34,7 @@
       system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
+        config.allowUnfree = true;
         overlays = [ inputs.nix-minecraft.overlays.default ];
       };
     in
@@ -58,6 +59,7 @@
             ./modules/services.nix
             inputs.agenix.nixosModules.default
           ];
+
           homelab.packages = with pkgs; [
             git
             vim
