@@ -14,7 +14,7 @@ let
     in
     {
       description = server.description;
-      wantedBy = [ "multi-user.target" ];
+      wantedBy = lib.optional server.autoStart "multi-user.target";
       after = [ "network.target" ];
       path = [
         pkgs.bashInteractive
@@ -69,6 +69,12 @@ in
     type = lib.types.attrsOf (lib.types.submodule {
       options = {
         enable = lib.mkEnableOption "this custom Forge server";
+
+        autoStart = lib.mkOption {
+          type = lib.types.bool;
+          default = true;
+          description = "Start the server automatically at boot.";
+        };
 
         description = lib.mkOption {
           type = lib.types.str;

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -13,14 +13,4 @@
 
   nix.settings.auto-optimise-store = true;
   programs.nix-ld.enable = true;
-  environment.systemPackages = with pkgs; [
-    wget
-    curl
-    screen
-    jdk21_headless
-    ripgrep
-    lazygit
-    bottom
-    steamcmd
-  ];
 }

@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
   # Nix trust permits remote store operations and is root-equivalent access.
   nix.settings.trusted-users = [ "admin" ];
@@ -9,8 +9,8 @@
     extraGroups = [
       "wheel"
       "networkmanager"
-      "minecraft"
-    ];
+    ] ++ lib.optional (lib.any (name: config.homelab.services.${name}.enable)
+      [ "htx" "andrea" "bedwars" "star" "hacker" ]) "minecraft";
     openssh.authorizedKeys.keys = import ../keys.nix;
   };
 

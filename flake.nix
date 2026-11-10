@@ -36,12 +36,16 @@
         inherit system;
         overlays = [ inputs.nix-minecraft.overlays.default ];
       };
-      hosts = [
-        "thor"
-        "odin"
-      ];
     in
     {
+      devShells.${system}.default = pkgs.mkShell {
+        packages = [
+          colmena.packages.${system}.colmena
+          inputs.agenix.packages.${system}.default
+          pkgs.cloudflared
+        ];
+      };
+
       colmenaHive = colmena.lib.makeHive ({
         meta = {
           nixpkgs = pkgs;
@@ -51,8 +55,18 @@
         defaults = {
           imports = [
             ./modules/server.nix
-            inputs.nix-minecraft.nixosModules.minecraft-servers
+            ./modules/services.nix
             inputs.agenix.nixosModules.default
+          ];
+          homelab.packages = with pkgs; [
+            git
+            vim
+            neovim
+            kitty
+            btop
+            wget
+            curl
+            cloudflared
           ];
           deployment = {
             targetUser = "admin";
@@ -66,32 +80,69 @@
         };
 
         odin = {
-          imports = [
-            ./hosts/odin/configuration.nix
-
-            ./services/minecraft/base.nix
-            ./services/minecraft/htx.nix
-            ./services/minecraft/bedwars.nix
-            ./services/minecraft/console.nix
-          ];
+          imports = [ ./hosts/odin/configuration.nix ];
+          homelab = {
+            packages = with pkgs; [ ];
+            services = {
+              htx = {
+                enable = true;
+                autoStart = true;
+                port = 25565;
+                voiceChat = {
+                  port = 24454;
+                  bindAddress = "";
+                  publicEndpoint = "69.9.185.16:12864";
+                };
+                resourcePack.publicUrl = "http://209.25.141.17:24224";
+              };
+              bedwars = {
+                enable = true;
+                autoStart = false;
+                port = 23344;
+              };
+            };
+          };
           deployment.targetHost = "odin";
-
         };
 
         thor = {
-          imports = [
-            ./hosts/thor/configuration.nix
-
-            ./services/minecraft/base.nix
-            ./services/minecraft/forge.nix
-            ./services/minecraft/andrea.nix
-            ./services/minecraft/star.nix
-            ./services/minecraft/hacker.nix
-            ./services/minecraft/console.nix
-
-            ./services/cockpit.nix
-            ./services/windrose.nix
-          ];
+          imports = [ ./hosts/thor/configuration.nix ];
+          homelab = {
+            packages = with pkgs; [
+              steamcmd
+            ];
+            services = {
+              andrea = {
+                enable = true;
+                autoStart = true;
+                port = 23343;
+                voiceChat = {
+                  port = 24454;
+                  bindAddress = "";
+                  publicEndpoint = "69.9.185.16:37637";
+                };
+                resourcePack.publicUrl = "http://209.25.141.16:42867";
+              };
+              star = {
+                enable = true;
+                autoStart = true;
+                port = null;
+              };
+              hacker = {
+                enable = true;
+                autoStart = true;
+                port = null;
+              };
+              cockpit = {
+                enable = true;
+                port = 9090;
+              };
+              windrose = {
+                enable = true;
+                ports = [ ];
+              };
+            };
+          };
           deployment.targetHost = "thor";
         };
       });

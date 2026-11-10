@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -12,10 +12,4 @@
   system.stateVersion = "26.05";
 
   programs.nix-ld.enable = true;
-  environment.systemPackages = with pkgs; [
-    inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
-    btop
-    steamcmd
-    cloudflared
-  ];
 }
